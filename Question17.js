@@ -7,3 +7,5 @@ function sum(...nums) {
 }
 console.log(sum(1, 2, 3, 4, 5));
 console.log(sum(10, 20)); 
+// 
+const { name, age, address: { city, pin } } = user;
