@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List Application</title>
+    <style>
+        /* CSS for the "completed" visual effect */
+        .completed {
+            text-decoration: line-through;
+            color: gray;
+        }
+        /* Basic styling for layout */
+        .task-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .task-text {
+            flex-grow: 1;
+        }
+        .task-item button {
+            margin-left: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Simple To-Do List</h1>
+
+    <input type="text" id="taskInput" placeholder="Enter a new task">
+    
+    <button id="addTaskBtn">Add Task</button>
+
+    <hr>
+
+    <ul id="taskList">
+        </ul>
+
+    <script src="./Question15.js"></script> 
+</body>
+</html>
