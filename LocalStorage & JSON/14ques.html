@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enhanced Todo List</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            width: 400px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px #bbb;
+        }
+
+        input, button {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #taskInput, #searchInput {
+            width: calc(100% - 20px);
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        li {
+            background: #e9e9e9;
+            margin-bottom: 8px;
+            padding: 10px;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li.completed {
+            text-decoration: line-through;
+            background: #d3ffd3;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .btn-small {
+            padding: 5px 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Enhanced Todo List</h2>
+
+    <input type="text" id="taskInput" placeholder="Enter task...">
+    <button onclick="addTask()">Add Task</button>
+
+    <input type="text" id="searchInput" placeholder="Search tasks..." onkeyup="searchTasks()">
+
+    <ul id="taskList"></ul>
+</div>
+
+<script>
+    let tasks = [];
+
+    // Load tasks on page load
+    window.onload = function() {
+        const saved = localStorage.getItem("tasks");
+        if (saved) {
+            tasks = JSON.parse(saved);
+            displayTasks(tasks);
+        }
+    }
+
+    // Save to localStorage
+    function saveTasks() {
+        localStorage.setItem("tasks", JSON.stringify(tasks));
+    }
+
+    // Add Task
+    function addTask() {
+        const text = document.getElementById("taskInput").value.trim();
+        if (text === "") {
+            alert("Cannot add empty task!");
+            return;
+        }
+
+        const newTask = {
+            id: Date.now(),
+            text: text,
+            completed: false
+        };
+
+        tasks.push(newTask);
+        saveTasks();
+        displayTasks(tasks);
+
+        document.getElementById("taskInput").value = "";
+    }
+
+    // Toggle Task Completion
+    function toggleTask(id) {
+        tasks = tasks.map(task =>
+            task.id === id ? { ...task, completed: !task.completed } : task
+        );
+        saveTasks();
+        displayTasks(tasks);
+    }
+
+    // Delete Task
+    function deleteTask(id) {
+        tasks = tasks.filter(task => task.id !== id);
+        saveTasks();
+        displayTasks(tasks);
+    }
+
+    // Display Tasks
+    function displayTasks(taskArray) {
+        const list = document.getElementById("taskList");
+        list.innerHTML = "";
+
+        taskArray.forEach(task => {
+            const li = document.createElement("li");
+            li.className = task.completed ? "completed" : "";
+
+            li.innerHTML = `
+                <span onclick="toggleTask(${task.id})" style="cursor:pointer;">
+                    ${task.text}
+                </span>
+                <button class="btn-small" onclick="deleteTask(${task.id})">Delete</button>
+            `;
+
+            list.appendChild(li);
+        });
+    }
+
+    // Search Tasks
+    function searchTasks() {
+        const query = document.getElementById("searchInput").value.toLowerCase();
+
+        const filtered = tasks.filter(task =>
+            task.text.toLowerCase().includes(query)
+        );
+
+        displayTasks(filtered);
+    }
+</script>
+
+</body>
+</html>
